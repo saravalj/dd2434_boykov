@@ -16,6 +16,6 @@ http://vision.csd.uwo.ca/code/
 
 It implements the following paper : 
 
-"An Experimental Comparison of Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision
+"An Experimental Comparison of Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision"
 
 by Yuri Boykov and Vladimir Kolmogorov
