@@ -1,11 +1,10 @@
-function [ G ] = buildImgGraph( img, fgseeds, bgseeds, lambda )
+function [ G, Simg, sinkId, sourceId ] = buildImgGraph( img, fgseeds, bgseeds, lambda )
 
  % Reshape image and masks
 [h, w, c] = size(img);
 Simg = reshape(img, h*w, c);
 Sfgseeds = reshape(fgseeds, h*w, 1);
 Sbgseeds = reshape(bgseeds, h*w, 1);
-nodeId = 1:h*w;
 
 % Compute histograms on seeded pixels
 [fgHist, binLocations] = imhist(Simg(Sfgseeds == 255,:));
@@ -35,13 +34,15 @@ K = sum(weights); % TODO
 sinkWeights = zeros(h*w, 1);
 sinkWeights(Sfgseeds == 255) = 0;
 sinkWeights(Sbgseeds == 255) = K;
-sinkWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * -log(fgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
+sinkWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = ...
+    lambda * -log(fgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
 
 % Compute source weights
 sourceWeights = zeros(h*w, 1);
 sourceWeights(Sfgseeds == 255) = K;
 sourceWeights(Sbgseeds == 255) = 0;
-sourceWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * -log(bgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
+sourceWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = ...
+    lambda * -log(bgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
 
 % Create the weighted undirected graph
 G = graph(  [edges(1,:) sinkEdges(1,:) sourceEdges(1,:)], ...
@@ -49,8 +50,5 @@ G = graph(  [edges(1,:) sinkEdges(1,:) sourceEdges(1,:)], ...
             [weights; sinkWeights; sourceWeights]);
 
 %plot(G,'Layout','layered')
-
-[mf,~,cs,ct] = maxflow(G,sourceId,sinkId);
-
 end
 
