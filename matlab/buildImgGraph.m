@@ -1,4 +1,4 @@
-function [ G, Simg, sinkId, sourceId ] = buildImgGraph( img, fgseeds, bgseeds, lambda )
+function [ G, Simg, sinkId, sourceId ] = buildImgGraph( img, fgseeds, bgseeds, lambda, sigma )
 
  % Reshape image and masks
 [h, w, c] = size(img);
@@ -26,7 +26,7 @@ sinkEdges = [sinkId*ones(1,h*w); 1:h*w];
 sourceEdges = [sourceId*ones(1,h*w); 1:h*w];
 
 % Compute Bpq weights
-weights = rbf(single(Simg(edges(1,:))), single(Simg(edges(2,:))));
+weights = rbf(single(Simg(edges(1,:))), single(Simg(edges(2,:))), sigma);
 
 % Compute sink weights
 K = sum(weights); % TODO

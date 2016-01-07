@@ -1,6 +1,7 @@
 clear; clc;
 
-lambda = 60;
+lambda = 5;
+sigma = 80;
 
 % Open image & masks
 img = rgb2gray(imread('img/grid.png'));
@@ -9,7 +10,7 @@ bgseeds = rgb2gray(imread('img/grid_bgmask.png'));
 [h, w, c] = size(img);
 
 % Compute the graph
-[G,Simg,sinkId,sourceId] = buildImgGraph(img, fgseeds, bgseeds, lambda);
+[G,Simg,sinkId,sourceId] = buildImgGraph(img, fgseeds, bgseeds, lambda, sigma);
 
 % Cut the graph
 [mf,H,cs,ct] = maxflow(G,sourceId,sinkId);
