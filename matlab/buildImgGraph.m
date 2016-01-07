@@ -32,16 +32,25 @@ weights = rbf(single(Simg(edges(1,:))), single(Simg(edges(2,:))));
 % Compute sink weights
 K = sum(weights); % TODO
 
-sinkWeights = zeros(1, h*w);
+sinkWeights = zeros(h*w, 1);
 sinkWeights(Sfgseeds == 255) = 0;
 sinkWeights(Sbgseeds == 255) = K;
 sinkWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * -log(fgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
 
+% Compute source weights
+sourceWeights = zeros(h*w, 1);
+sourceWeights(Sfgseeds == 255) = K;
+sourceWeights(Sbgseeds == 255) = 0;
+sourceWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * -log(bgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
+
+% Create the weighted undirected graph
 G = graph(  [edges(1,:) sinkEdges(1,:) sourceEdges(1,:)], ...
             [edges(2,:) sinkEdges(2,:) sourceEdges(2,:)], ...
-            [weights sinkWeights sourceWeights]);
-        
+            [weights; sinkWeights; sourceWeights]);
+
 %plot(G,'Layout','layered')
+
+[mf,~,cs,ct] = maxflow(G,sourceId,sinkId);
 
 end
 
