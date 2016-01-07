@@ -17,7 +17,7 @@ bgHist = bgHist ./ sum(bgHist);
 
 % Example 
 % Rp_fg for the pixel in (1,1)
-%Rp_fg = fgHist(binLocations == img(1,1,:));
+%Rp_fg = -log(fgHist(binLocations == img(1,1,:)));
 
 % Compute the graph edges from the image size
 [ edges, sinkId, sourceId ] = edgeList( h, w );
@@ -35,13 +35,13 @@ K = sum(weights); % TODO
 sinkWeights = zeros(1, h*w);
 sinkWeights(Sfgseeds == 255) = 0;
 sinkWeights(Sbgseeds == 255) = K;
-sinkWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * fgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1));
+sinkWeights((Sfgseeds == 0) .* (Sbgseeds == 0) == 1) = lambda * -log(fgHist(1+Simg((Sfgseeds == 0) .* (Sbgseeds == 0) == 1)));
 
 G = graph(  [edges(1,:) sinkEdges(1,:) sourceEdges(1,:)], ...
             [edges(2,:) sinkEdges(2,:) sourceEdges(2,:)], ...
             [weights sinkWeights sourceWeights]);
         
-plot(G,'Layout','layered')
+%plot(G,'Layout','layered')
 
 end
 
