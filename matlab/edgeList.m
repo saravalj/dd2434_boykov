@@ -1,8 +1,5 @@
-function [ edges, sinkId, sourceId ] = edgeList( h, w )
+function [ edges ] = edgeList( h, w )
 % Return edges corresponding to a full meshed HxW image
-
-sinkId = h*w+1; % node id for the sink
-sourceId = h*w+2; % node id for the source
 
 vertEdges = [1:(h-1)*w; (1:(h-1)*w) + w];
 
