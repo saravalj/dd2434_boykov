@@ -24,12 +24,13 @@ segmentedImg(ct(ct ~= sinkId)) = 0;
 %Sfgseeds = reshape(fgseeds, h*w, 1);
 %segmentedImg(Sfgseeds == 255) = 128;
 
+% Plot the final segmentation
 imshow(reshape(segmentedImg, h, w, 1));
 
-figure;
-tmp = img;
-co = coord(cs(cs ~= sourceId),499);
-tmp(co(:,2), co(:,1)) = 255;
-co = coord(ct(ct ~= sinkId),499);
-tmp(co(:,2), co(:,1)) = 0;
-imshow(tmp);
+%figure;
+%tmp = img;
+%co = coord(cs(cs ~= sourceId),499);
+%tmp(co(:,2), co(:,1)) = 255;
+%co = coord(ct(ct ~= sinkId),499);
+%tmp(co(:,2), co(:,1)) = 0;
+%imshow(tmp);

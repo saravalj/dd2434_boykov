@@ -47,7 +47,7 @@ K = 8 * max(weights); % because 8-neighbouring system
 % Compute sink weights
 %sinkWeights = zeros(h*w, 1);
 tmp = -log(fgHist(1+Simg));
-tmp(tmp == Inf) = 200000*K;
+tmp(tmp == Inf) = K;
 sinkWeights = lambda * tmp;
 sinkWeights(Sfgseeds == 255) = 0;
 sinkWeights(Sbgseeds == 255) = K;
@@ -60,7 +60,7 @@ sinkWeights(Sbgseeds == 255) = K;
 % Compute source weights
 %sourceWeights = zeros(h*w, 1);
 tmp = -log(bgHist(1+Simg));
-tmp(tmp == Inf) = 200000*K;
+tmp(tmp == Inf) = K;
 sourceWeights = lambda * tmp;
 sourceWeights(Sfgseeds == 255) = K;
 sourceWeights(Sbgseeds == 255) = 0;
