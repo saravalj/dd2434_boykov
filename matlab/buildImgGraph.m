@@ -41,7 +41,8 @@ weights = adhoc(single(Simg(edges(1,:))), single(Simg(edges(2,:))), sigma, w, ed
 %K = 1 + maxBpq;
 
 % Compute K
-K = sum(weights);
+%K = sum(weights);
+K = 8 * max(weights); % because 8-neighbouring system
 
 % Compute sink weights
 %sinkWeights = zeros(h*w, 1);
